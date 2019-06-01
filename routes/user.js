@@ -8,8 +8,10 @@ const router = express.Router();
 
 router.use(express.json());
 
-// POST /user
-// Create a new user with username and password
+/**
+ * POST /user
+ * Create a new user with username and password
+ */
 router.post(
   '/',
   [
@@ -48,8 +50,10 @@ router.post(
   }
 );
 
-// POST /user/auth
-// Authenticate a user with username and password
+/**
+ * POST /user/auth
+ * Authenticate a user with username and password
+ */
 router.post(
   '/auth',
   [
