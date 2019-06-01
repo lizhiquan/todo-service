@@ -2,6 +2,7 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const User = require('../models/user');
 const { check, validationResult } = require('express-validator/check');
+const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -67,6 +68,16 @@ router.post(
       .then(authenticated =>
         res.sendStatus(authenticated ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
       )
+      .then(authenticated => {
+        if (authenticated) {
+          const token = jwt.sign({ username: username }, process.env.SECRET, {
+            expiresIn: process.env.TOKEN_EXPIRES_IN
+          });
+          res.status(HttpStatus.OK).json({ success: true, token: token });
+        } else {
+          res.status(HttpStatus.UNAUTHORIZED).json({ success: false });
+        }
+      })
       .catch(error => {
         // TODO: Logger
         console.error(error);
