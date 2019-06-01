@@ -10,7 +10,7 @@ CREATE TABLE user (
 
 CREATE TABLE todo_item (
   id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(50),
+  title VARCHAR(50) NOT NULL,
   done BIT NOT NULL,
   created DATETIME NOT NULL,
   modified DATETIME,
