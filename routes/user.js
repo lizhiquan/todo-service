@@ -15,7 +15,8 @@ router.post(
   [
     check('username')
       .isLength({ min: 6, max: 20 })
-      .withMessage('must be from 6 to 20 chars long'),
+      .withMessage('must be from 6 to 20 chars long')
+      .matches(/^[a-zA-Z0-9]+$/),
     check('password')
       .isLength({ min: 6 })
       .withMessage('must be at least 6 chars long')
@@ -27,21 +28,21 @@ router.post(
     if (!errors.isEmpty()) {
       return res
         .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .json({ errors: errors.array() });
+        .json({ success: false, error: errors.array() });
     }
 
     const { username, password } = req.body;
     User.create(username, password)
-      .then(() => res.sendStatus(HttpStatus.CREATED))
+      .then(() => res.status(HttpStatus.CREATED).json({ success: true }))
       .catch(error => {
         // TODO: Logger
         if (error.code === 'ER_DUP_ENTRY') {
           res
             .status(HttpStatus.CONFLICT)
-            .json({ message: 'Username is already in use.' });
+            .json({ success: false, error: 'Username is already in use.' });
         } else {
           console.error(error);
-          res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+          res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
         }
       });
   }
@@ -60,14 +61,11 @@ router.post(
     if (!errors.isEmpty()) {
       return res
         .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .json({ errors: errors.array() });
+        .json({ success: false, error: errors.array() });
     }
 
     const { username, password } = req.body;
     User.authenticate(username, password)
-      .then(authenticated =>
-        res.sendStatus(authenticated ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
-      )
       .then(authenticated => {
         if (authenticated) {
           const token = jwt.sign({ username: username }, process.env.SECRET, {
@@ -81,7 +79,7 @@ router.post(
       .catch(error => {
         // TODO: Logger
         console.error(error);
-        res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
       });
   }
 );
