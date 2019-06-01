@@ -26,6 +26,7 @@ module.exports = {
     'prefer-arrow-callback': 'error',
     'symbol-description': 'error',
     yoda: ['error', 'never', { exceptRange: true }],
-    'prefer-const': 'error'
+    'prefer-const': 'error',
+    'newline-per-chained-call': 1
   }
 };
