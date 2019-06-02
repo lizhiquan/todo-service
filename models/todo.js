@@ -1,4 +1,4 @@
-const { pool } = require('../database/index');
+const db = require('../database/index');
 
 exports.get = (username, limit, offset) => {
   const query = `
@@ -9,7 +9,7 @@ exports.get = (username, limit, offset) => {
     LIMIT ?
     OFFSET ?
   `;
-  return pool.queryAsync(query, [username, parseInt(limit), parseInt(offset)]);
+  return db.queryAsync(query, [username, parseInt(limit), parseInt(offset)]);
 };
 
 exports.create = (username, title) => {
@@ -23,7 +23,7 @@ exports.create = (username, title) => {
     created: created,
     username: username
   };
-  return pool.queryAsync('INSERT INTO todo_item SET ?', item);
+  return db.queryAsync('INSERT INTO todo_item SET ?', item);
 };
 
 exports.update = (id, username, title, done) => {
@@ -36,7 +36,7 @@ exports.update = (id, username, title, done) => {
     .toISOString()
     .slice(0, 19)
     .replace('T', ' ');
-  return pool.queryAsync(query, [title, done ? 1 : 0, modified, id, username]);
+  return db.queryAsync(query, [title, done ? 1 : 0, modified, id, username]);
 };
 
 exports.delete = (id, username) => {
@@ -44,5 +44,5 @@ exports.delete = (id, username) => {
     DELETE FROM todo_item
     WHERE id=? AND username=?
   `;
-  return pool.queryAsync(query, [id, username]);
+  return db.queryAsync(query, [id, username]);
 };

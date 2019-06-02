@@ -4,7 +4,7 @@ const Promise = require('bluebird');
 
 dotenv.config();
 
-exports.pool = Promise.promisifyAll(
+module.exports = Promise.promisifyAll(
   mysql.createPool({
     connectionLimit: 10,
     host: process.env.DB_HOST,
