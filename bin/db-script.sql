@@ -1,6 +1,5 @@
-DROP DATABASE todo;
-CREATE DATABASE todo;
-USE todo;
+DROP TABLE todo_item;
+DROP TABLE user;
 
 CREATE TABLE user (
   username VARCHAR(20) NOT NULL,
