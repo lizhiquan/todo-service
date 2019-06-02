@@ -3,6 +3,7 @@ const HttpStatus = require('http-status-codes');
 const ToDo = require('../models/todo');
 const { authenticate } = require('../middlewares/auth');
 const { check, validationResult } = require('express-validator/check');
+const { reduceValidationErrors } = require('../helpers/validation');
 
 const router = express.Router();
 
@@ -20,12 +21,12 @@ router.get('/', (req, res) => {
   const offset = req.query.offset || 0;
   ToDo.get(req.username, limit, offset)
     .then(results => {
-      res.status(HttpStatus.OK).json({ success: true, data: results });
+      res.status(HttpStatus.OK).json({ data: results });
     })
     .catch(error => {
       // TODO: Logger
       console.error(error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -37,19 +38,19 @@ router.get('/', (req, res) => {
 router.post('/', check('title').exists({ checkFalsy: true }), (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res
-      .status(HttpStatus.UNPROCESSABLE_ENTITY)
-      .json({ success: false, error: errors.array() });
+    return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+      message: reduceValidationErrors(errors)
+    });
   }
 
   ToDo.create(req.username, req.body.title)
     .then(() => {
-      res.status(HttpStatus.CREATED).json({ success: true });
+      res.sendStatus(HttpStatus.CREATED);
     })
     .catch(error => {
       // TODO: Logger
       console.error(error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });
 
@@ -66,19 +67,19 @@ router.put(
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .json({ success: false, error: errors.array() });
+      return res.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+        message: reduceValidationErrors(errors)
+      });
     }
 
     ToDo.update(req.params.id, req.username, req.body.title, req.body.done)
       .then(() => {
-        res.status(HttpStatus.OK).json({ success: true });
+        res.sendStatus(HttpStatus.OK);
       })
       .catch(error => {
         // TODO: Logger
         console.error(error);
-        res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
+        res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
 );
@@ -91,12 +92,12 @@ router.put(
 router.delete('/:id', (req, res) => {
   ToDo.delete(req.params.id, req.username)
     .then(() => {
-      res.status(HttpStatus.OK).json({ success: true });
+      res.sendStatus(HttpStatus.OK);
     })
     .catch(error => {
       // TODO: Logger
       console.error(error);
-      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false });
+      res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });
 
