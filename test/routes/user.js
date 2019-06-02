@@ -2,11 +2,11 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '.env.test' });
 
 const request = require('supertest');
-const app = require('../app');
+const app = require('../../app');
 const HttpStatus = require('http-status-codes');
 const fs = require('fs');
 const mysql = require('mysql');
-const db = require('../database/index');
+const db = require('../../database/index');
 const expect = require('chai').expect;
 
 const connection = mysql.createConnection({
