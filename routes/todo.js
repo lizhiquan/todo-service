@@ -21,7 +21,14 @@ router.get('/', (req, res) => {
   const offset = req.query.offset || 0;
   ToDo.get(req.username, limit, offset)
     .then(results => {
-      res.status(HttpStatus.OK).json({ data: results });
+      const data = results.map(x => ({
+        id: x.id,
+        title: x.title,
+        done: x.done[0] === 1,
+        created: x.created,
+        modified: x.modified
+      }));
+      res.status(HttpStatus.OK).json({ data: data });
     })
     .catch(error => {
       // TODO: Logger
