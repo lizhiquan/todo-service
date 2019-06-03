@@ -105,6 +105,12 @@ Get a list of todo items
 
     GET /todo
 
+Header:
+
+| Field           | Description                                                          | Optional |
+| --------------- | -------------------------------------------------------------------- | -------- |
+| `Authorization` | Bearer type authentication using the token received after signing in | no       |
+
 Query params:
 
 | Field    | Description                      | Optional         |
@@ -134,6 +140,12 @@ Create a new todo item
 
     POST /todo
 
+Header:
+
+| Field           | Description                                                          | Optional |
+| --------------- | -------------------------------------------------------------------- | -------- |
+| `Authorization` | Bearer type authentication using the token received after signing in | no       |
+
 Body:
 
 | Field   | Description              | Optional |
@@ -145,6 +157,12 @@ Body:
 Update an existing todo item
 
     PUT /todo/:id
+
+Header:
+
+| Field           | Description                                                          | Optional |
+| --------------- | -------------------------------------------------------------------- | -------- |
+| `Authorization` | Bearer type authentication using the token received after signing in | no       |
 
 Body:
 
@@ -158,6 +176,12 @@ Body:
 Delete an existing todo item
 
     DELETE /todo/:id
+
+Header:
+
+| Field           | Description                                                          | Optional |
+| --------------- | -------------------------------------------------------------------- | -------- |
+| `Authorization` | Bearer type authentication using the token received after signing in | no       |
 
 ## Database
 
