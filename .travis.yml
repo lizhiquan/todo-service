@@ -6,9 +6,4 @@ services:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS todo_test;'
 env:
-  - DB_HOST=localhost
-  - DB_USER=root
-  - DB_PASSWORD=
-  - DB_NAME=todo_test
-  - SECRET=53cr3t-k3y
-  - TOKEN_EXPIRES_IN=24h
+  - DB_HOST=localhost DB_USER=root DB_PASSWORD= DB_NAME=todo_test SECRET=53cr3t-k3y TOKEN_EXPIRES_IN=24h
