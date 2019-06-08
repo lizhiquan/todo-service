@@ -97,6 +97,20 @@ describe('User', () => {
           expect(body.token).to.not.equal('');
         });
     });
+
+    it('should respond fail when the password is mismatch', () => {
+      return request(app)
+        .post('/user/auth')
+        .send({ username: 'abcabc', password: 'abc123123' })
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should respond fail when the username does not exist', () => {
+      return request(app)
+        .post('/user/auth')
+        .send({ username: 'abcabc123', password: 'abc123123' })
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
   });
 
   after(() => {
