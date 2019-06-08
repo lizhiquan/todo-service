@@ -1,5 +1,5 @@
-DROP TABLE todo_item;
-DROP TABLE user;
+DROP TABLE IF EXISTS todo_item;
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
   username VARCHAR(20) NOT NULL,
