@@ -4,26 +4,13 @@ dotenv.config({ path: '.env.test' });
 const request = require('supertest');
 const app = require('../../app');
 const HttpStatus = require('http-status-codes');
-const fs = require('fs');
-const mysql = require('mysql');
-const Promise = require('bluebird');
 const db = require('../../database/index');
 const expect = require('chai').expect;
-
-const connection = Promise.promisifyAll(
-  mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    multipleStatements: true
-  })
-);
+const { resetDatabase } = require('../utils');
 
 describe('User', () => {
   before(() => {
-    const sql = fs.readFileSync('./bin/db-script.sql', 'utf8');
-    return connection.queryAsync(sql);
+    return resetDatabase();
   });
 
   describe('POST /user', () => {
@@ -110,10 +97,23 @@ describe('User', () => {
           expect(body.token).to.not.equal('');
         });
     });
+
+    it('should respond fail when the password is mismatch', () => {
+      return request(app)
+        .post('/user/auth')
+        .send({ username: 'abcabc', password: 'abc123123' })
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should respond fail when the username does not exist', () => {
+      return request(app)
+        .post('/user/auth')
+        .send({ username: 'abcabc123', password: 'abc123123' })
+        .expect(HttpStatus.UNAUTHORIZED);
+    });
   });
 
   after(() => {
-    connection.end();
     db.end();
   });
 });
