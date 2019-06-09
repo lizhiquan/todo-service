@@ -1,10 +1,13 @@
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env.test' });
+
 const fs = require('fs');
 const mysql = require('mysql2');
 const bluebird = require('bluebird');
 
 const readFile = bluebird.promisify(fs.readFile);
 
-exports.resetDatabase = () => {
+exports.query = sql => {
   const connection = mysql
     .createConnection({
       host: process.env.DB_HOST,
@@ -14,8 +17,9 @@ exports.resetDatabase = () => {
       multipleStatements: true
     })
     .promise(bluebird);
+  return connection.query(sql).finally(() => connection.end());
+};
 
-  return readFile('./bin/db-script.sql', 'utf8')
-    .then(sql => connection.query(sql))
-    .finally(() => connection.end());
+exports.resetDatabase = () => {
+  return readFile('./bin/db-script.sql', 'utf8').then(sql => this.query(sql));
 };

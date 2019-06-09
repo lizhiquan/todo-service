@@ -1,6 +1,3 @@
-const dotenv = require('dotenv');
-dotenv.config({ path: '.env.test' });
-
 const request = require('supertest');
 const app = require('../../app');
 const HttpStatus = require('http-status-codes');
