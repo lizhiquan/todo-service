@@ -12,4 +12,4 @@ env:
   matrix:
     - DB_HOST=localhost DB_USER=root DB_PASSWORD= DB_NAME=todo_test SECRET=53cr3t-k3y TOKEN_EXPIRES_IN=24h
 script:
-  - yarn run report-coverage
+  - yarn run coverage && yarn run coverage:report

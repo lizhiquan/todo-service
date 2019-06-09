@@ -8,7 +8,7 @@
     "dev": "nodemon server.js",
     "test": "mocha --recursive --timeout 10000",
     "coverage": "nyc npm run test",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
