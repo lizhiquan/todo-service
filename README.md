@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/lizhiquan/todo-service.svg?branch=master)](https://travis-ci.org/lizhiquan/todo-service)
 [![codecov](https://codecov.io/gh/lizhiquan/todo-service/branch/master/graph/badge.svg)](https://codecov.io/gh/lizhiquan/todo-service)
+[![Greenkeeper badge](https://badges.greenkeeper.io/lizhiquan/todo-service.svg)](https://greenkeeper.io/)
 
 To-do service is a simple backend-only service which is built to demonstrate handling user authentication, storing persistent data to a relational database and unit testing express routes.
 
