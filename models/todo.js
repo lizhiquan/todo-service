@@ -9,7 +9,9 @@ exports.get = (username, limit, offset) => {
     LIMIT ?
     OFFSET ?
   `;
-  return db.query(query, [username, parseInt(limit), parseInt(offset)]);
+  return db
+    .query(query, [username, parseInt(limit), parseInt(offset)])
+    .then(([rows, fields]) => rows);
 };
 
 exports.create = (username, title) => {
