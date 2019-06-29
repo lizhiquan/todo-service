@@ -4,6 +4,7 @@ const User = require('../models/user');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const { reduceValidationErrors } = require('../helpers/validation');
+const logger = require('../config/winston');
 
 const router = express.Router();
 
@@ -38,13 +39,12 @@ router.post(
     User.create(username, password)
       .then(() => res.sendStatus(HttpStatus.CREATED))
       .catch(error => {
-        // TODO: Logger
         if (error.code === 'ER_DUP_ENTRY') {
           res
             .status(HttpStatus.CONFLICT)
             .json({ message: 'Username is already in use.' });
         } else {
-          console.error(error);
+          logger.error(error);
           res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
       });
@@ -82,8 +82,7 @@ router.post(
         }
       })
       .catch(error => {
-        // TODO: Logger
-        console.error(error);
+        logger.error(error);
         res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
