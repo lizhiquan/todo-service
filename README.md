@@ -53,11 +53,12 @@ In order to run test, your have to create another env file named `.env.test` to 
 ## Technologies
 
 - Routing - [expressjs](https://github.com/expressjs/express/)
-- Database - [mysql](https://github.com/mysqljs/mysql)
+- Database - [mysql](https://github.com/sidorares/node-mysql2)
 - Authentication - [jwt](https://github.com/auth0/node-jsonwebtoken)
 - Password hash - [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
 - Request validation - [express-validator](http://express-validator.github.io)
 - Environment variables - [dotenv](https://github.com/motdotla/dotenv)
+- Logging - [morgan](https://github.com/expressjs/morgan) & [winston](https://github.com/winstonjs/winston)
 - Linting - [eslint](https://eslint.org)
 - Testing framework - [Mocha](https://mochajs.org)
 - Assertion library - [Chai](https://www.chaijs.com)
