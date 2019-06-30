@@ -1,7 +1,7 @@
 const express = require('express');
 const HttpStatus = require('http-status-codes');
 const User = require('../models/user');
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const { reduceValidationErrors } = require('../helpers/validation');
 const logger = require('../config/winston');

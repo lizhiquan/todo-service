@@ -2,7 +2,7 @@ const express = require('express');
 const HttpStatus = require('http-status-codes');
 const ToDo = require('../models/todo');
 const { authenticate } = require('../middlewares/auth');
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 const { reduceValidationErrors } = require('../helpers/validation');
 const logger = require('../config/winston');
 
