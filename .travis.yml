@@ -10,6 +10,6 @@ env:
   global:
     - CODECOV_TOKEN=152561a7-85a0-4dd0-86e3-28000089787d
   matrix:
-    - DB_HOST=localhost DB_USER=root DB_PASSWORD= DB_NAME=todo_test SECRET=53cr3t-k3y TOKEN_EXPIRES_IN=24h
+    - NODE_ENV=test DB_HOST=localhost DB_USER=root DB_PASSWORD= DB_NAME=todo_test SECRET=53cr3t-k3y TOKEN_EXPIRES_IN=24h
 script:
   - yarn run coverage && yarn run coverage:report
