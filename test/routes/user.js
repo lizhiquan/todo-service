@@ -4,10 +4,17 @@ const HttpStatus = require('http-status-codes');
 const db = require('../../database/index');
 const expect = require('chai').expect;
 const { resetDatabase } = require('../utils');
+const sinon = require('sinon');
+
+const sandbox = sinon.createSandbox();
 
 describe('User', () => {
   before(() => {
     return resetDatabase();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe('POST /user', () => {
@@ -50,6 +57,18 @@ describe('User', () => {
         .post('/user')
         .send({ username: 'abcabc', password: 'abc123' })
         .expect(HttpStatus.CONFLICT);
+    });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .post('/user')
+        .send({ username: 'abcabcabc', password: 'abc123' })
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
     });
   });
 
@@ -107,6 +126,18 @@ describe('User', () => {
         .post('/user/auth')
         .send({ username: 'abcabc123', password: 'abc123123' })
         .expect(HttpStatus.UNAUTHORIZED);
+    });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .post('/user/auth')
+        .send({ username: 'abcabc123', password: 'abc123123' })
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
     });
   });
 
