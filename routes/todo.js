@@ -4,6 +4,7 @@ const ToDo = require('../models/todo');
 const { authenticate } = require('../middlewares/auth');
 const { check, validationResult } = require('express-validator/check');
 const { reduceValidationErrors } = require('../helpers/validation');
+const logger = require('../config/winston');
 
 const router = express.Router();
 
@@ -31,8 +32,7 @@ router.get('/', (req, res) => {
       res.status(HttpStatus.OK).json({ data: data });
     })
     .catch(error => {
-      // TODO: Logger
-      console.error(error);
+      logger.error(error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });
@@ -55,8 +55,7 @@ router.post('/', check('title').exists({ checkFalsy: true }), (req, res) => {
       res.sendStatus(HttpStatus.CREATED);
     })
     .catch(error => {
-      // TODO: Logger
-      console.error(error);
+      logger.error(error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });
@@ -84,8 +83,7 @@ router.put(
         res.sendStatus(HttpStatus.OK);
       })
       .catch(error => {
-        // TODO: Logger
-        console.error(error);
+        logger.error(error);
         res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
       });
   }
@@ -102,8 +100,7 @@ router.delete('/:id', (req, res) => {
       res.sendStatus(HttpStatus.OK);
     })
     .catch(error => {
-      // TODO: Logger
-      console.error(error);
+      logger.error(error);
       res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     });
 });

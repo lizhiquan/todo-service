@@ -5,6 +5,10 @@ const app = require('../../app');
 const User = require('../../models/user');
 const ToDo = require('../../models/todo');
 const { query, resetDatabase } = require('../utils');
+const sinon = require('sinon');
+const db = require('../../database/index');
+
+const sandbox = sinon.createSandbox();
 
 describe('Todo', () => {
   const username = 'username';
@@ -20,6 +24,10 @@ describe('Todo', () => {
           .send({ username: username, password: password })
           .then(({ body }) => (token = body.token))
       );
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe('GET /todo', () => {
@@ -52,6 +60,20 @@ describe('Todo', () => {
           })
       );
     });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .get('/todo')
+        .set('Authorization', 'Bearer ' + token)
+        .query({ limit: 5, offset: 0 })
+        .send()
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
+    });
   });
 
   describe('POST /todo', () => {
@@ -82,6 +104,19 @@ describe('Todo', () => {
         "SELECT * FROM todo_item WHERE title='This is a title'"
       );
       expect(rows.length).to.be.equal(1);
+    });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .post('/todo')
+        .set('Authorization', 'Bearer ' + token)
+        .send({ title: 'This is a title' })
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
     });
   });
 
@@ -120,6 +155,19 @@ describe('Todo', () => {
       expect(rows[0].title).to.be.equal('Title');
       expect(rows[0].done[0]).to.be.equal(1);
     });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .put('/todo/1')
+        .set('Authorization', 'Bearer ' + token)
+        .send({ title: 'Title', done: true })
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
+    });
   });
 
   describe('DELETE /todo/:id', () => {
@@ -132,6 +180,19 @@ describe('Todo', () => {
 
       const [rows, fields] = await query('SELECT * FROM todo_item WHERE id=1');
       expect(rows).to.be.empty;
+    });
+
+    it('should respond internal server error when querying db is not successful', () => {
+      const queryStub = sandbox.stub(db, 'query').rejects();
+
+      return request(app)
+        .delete('/todo/1')
+        .set('Authorization', 'Bearer ' + token)
+        .send()
+        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
+        .then(() => {
+          expect(queryStub.calledOnce).to.be.true;
+        });
     });
   });
 });
