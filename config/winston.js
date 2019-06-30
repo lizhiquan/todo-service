@@ -26,17 +26,20 @@ const options = {
 };
 
 const logger = winston.createLogger({
-  transports: [new winston.transports.File(options.file)],
+  transports: [new winston.transports.Console(options.console)],
   exitOnError: false // do not exit on handled exceptions
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console(options.console));
+if (process.env.NODE_ENV === 'production') {
+  logger.add(new winston.transports.File(options.file));
 }
 
 // a stream object with a 'write' function that will be used by `morgan`
 logger.stream = {
   write: function(message, encoding) {
+    if (process.env.NODE_ENV === 'test') {
+      return;
+    }
     logger.info(`[morgan] ${message}`);
   }
 };
