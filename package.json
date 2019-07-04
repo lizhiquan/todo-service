@@ -8,7 +8,9 @@
     "dev": "nodemon server.js",
     "test": "mocha --recursive --timeout 10000",
     "coverage": "nyc npm run test",
-    "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "app-root-path": "^2.2.1",
@@ -21,7 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.5",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -31,5 +34,6 @@
     "nyc": "^14.1.1",
     "sinon": "^7.3.2",
     "supertest": "^4.0.2"
-  }
+  },
+  "snyk": true
 }
