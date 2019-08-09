@@ -9,4 +9,7 @@ db.getConnection()
       console.log('Todo service is listening on port ' + port);
     })
   )
-  .catch(error => console.error(error));
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
+  });
