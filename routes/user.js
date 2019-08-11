@@ -74,7 +74,7 @@ router.post(
       .then(authenticated => {
         if (authenticated) {
           const token = jwt.sign({ username: username }, process.env.SECRET, {
-            expiresIn: process.env.TOKEN_EXPIRES_IN
+            expiresIn: process.env.TOKEN_EXPIRES_IN_HOURS + 'h'
           });
           res.status(HttpStatus.OK).json({ token: token });
         } else {

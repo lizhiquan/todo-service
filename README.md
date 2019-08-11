@@ -51,6 +51,10 @@ In this mode, the server is running using `nodemon` and auto restart when change
 
 In order to run test, your have to create another env file named `.env.test` to connect to your test database.
 
+#### Start docker container
+
+    docker-compose -f docker/docker-compose.yml up --build -d
+
 ## Technologies
 
 - Routing - [expressjs](https://github.com/expressjs/express/)
@@ -66,6 +70,7 @@ In order to run test, your have to create another env file named `.env.test` to 
 - Test spies, stubs and mocks - [Sinon](https://sinonjs.org)
 - Test HTTP servers - [SuperTest](https://github.com/visionmedia/supertest)
 - Mock http objects - [node-mocks-http](https://github.com/howardabrams/node-mocks-http)
+- Docker - [Docker](https://www.docker.com)
 
 ## Endpoints
 
