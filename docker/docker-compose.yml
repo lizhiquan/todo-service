@@ -3,7 +3,9 @@ services:
   todo:
     container_name: todo-service
     restart: always
-    build: .
+    build: 
+      context: ../
+      dockerfile: docker/Dockerfile
     ports:
       - '3000:3000'
     env_file: .env.local
