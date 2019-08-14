@@ -100,6 +100,9 @@ describe('Todo', () => {
         "SELECT * FROM todo WHERE title='This is a title'"
       );
       expect(rows.length).to.be.equal(1);
+      const oneSecFromNow = new Date();
+      oneSecFromNow.setSeconds(oneSecFromNow.getSeconds() - 1);
+      expect(rows[0].created).to.greaterThan(oneSecFromNow);
     });
 
     it('should respond internal server error when querying db is not successful', () => {
@@ -150,6 +153,9 @@ describe('Todo', () => {
       const [rows, fields] = await query('SELECT * FROM todo WHERE id=1');
       expect(rows[0].title).to.be.equal('Title');
       expect(rows[0].done[0]).to.be.equal(1);
+      const oneSecFromNow = new Date();
+      oneSecFromNow.setSeconds(oneSecFromNow.getSeconds() - 1);
+      expect(rows[0].modified).to.greaterThan(oneSecFromNow);
     });
 
     it('should respond internal server error when querying db is not successful', () => {

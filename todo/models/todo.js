@@ -15,14 +15,9 @@ exports.get = (username, limit, offset) => {
 };
 
 exports.create = (username, title) => {
-  const created = new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace('T', ' ');
   const item = {
     title: title,
     done: 0,
-    created: created,
     username: username
   };
   return db.query('INSERT INTO todo SET ?', item);
@@ -31,14 +26,10 @@ exports.create = (username, title) => {
 exports.update = (id, username, title, done) => {
   const query = `
     UPDATE todo
-    SET title=?, done=?, modified=?
+    SET title=?, done=?
     WHERE id=? AND username=?
   `;
-  const modified = new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace('T', ' ');
-  return db.query(query, [title, done ? 1 : 0, modified, id, username]);
+  return db.query(query, [title, done ? 1 : 0, id, username]);
 };
 
 exports.delete = (id, username) => {
