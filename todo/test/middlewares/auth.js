@@ -2,8 +2,8 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const HttpStatus = require('http-status-codes');
 const httpMocks = require('node-mocks-http');
+const jwt = require('jsonwebtoken');
 const { authenticate } = require('../../middlewares/auth');
-const axios = require('axios');
 
 const sandbox = sinon.createSandbox();
 
@@ -51,50 +51,48 @@ describe('Authenticate middleware', () => {
       expect(nextSpy.notCalled).to.be.true;
     });
 
-    it('should respond fail if the provided token is invalid', done => {
-      const req = httpMocks.createRequest({
-        headers: { authorization: 'Bearer abc' }
-      });
-      const res = httpMocks.createResponse();
-      const nextSpy = sandbox.spy();
-      const statusSpy = sandbox.spy(res, 'sendStatus');
-      const postStub = sandbox
-        .stub(axios, 'post')
-        .rejects({ response: { status: HttpStatus.UNAUTHORIZED } });
-
-      authenticate(req, res, nextSpy);
-
-      setTimeout(() => {
-        expect(postStub.calledOnce).to.be.true;
-        expect(postStub.args[0][1].token).to.be.equal('abc');
-        expect(statusSpy.calledWith(HttpStatus.UNAUTHORIZED)).to.be.true;
-        expect(statusSpy.calledOnce).to.be.true;
-        expect(nextSpy.notCalled).to.be.true;
-        done();
-      }, 0);
-    });
-
-    it('should call next() if the provided token is valid', done => {
+    it('should respond fail if the provided token is invalid', () => {
       const req = httpMocks.createRequest({
         headers: { authorization: 'Bearer abc' }
       });
       const res = httpMocks.createResponse();
       const nextSpy = sandbox.spy();
       const statusSpy = sandbox.spy(res, 'status');
-      const postStub = sandbox
-        .stub(axios, 'post')
-        .resolves({ data: { username: 'tada' } });
+      const verifyStub = sandbox
+        .stub(jwt, 'verify')
+        .callsFake((token, secret, callback) => {
+          callback(new Error(), null);
+        });
 
       authenticate(req, res, nextSpy);
 
-      setTimeout(() => {
-        expect(postStub.calledOnce).to.be.true;
-        expect(postStub.args[0][1].token).to.be.equal('abc');
-        expect(statusSpy.notCalled).to.be.true;
-        expect(nextSpy.calledOnce).to.be.true;
-        expect(req.username).to.be.equal('tada');
-        done();
-      }, 0);
+      expect(verifyStub.calledOnce).to.be.true;
+      expect(verifyStub.calledWith('abc')).to.be.true;
+      expect(statusSpy.calledWith(HttpStatus.UNAUTHORIZED)).to.be.true;
+      expect(statusSpy.calledOnce).to.be.true;
+      expect(nextSpy.notCalled).to.be.true;
+    });
+
+    it('should call next() if the provided token is valid', () => {
+      const req = httpMocks.createRequest({
+        headers: { authorization: 'Bearer abc' }
+      });
+      const res = httpMocks.createResponse();
+      const nextSpy = sandbox.spy();
+      const statusSpy = sandbox.spy(res, 'status');
+      const verifyStub = sandbox
+        .stub(jwt, 'verify')
+        .callsFake((token, secret, callback) => {
+          callback(null, { username: 'tada' });
+        });
+
+      authenticate(req, res, nextSpy);
+
+      expect(verifyStub.calledOnce).to.be.true;
+      expect(verifyStub.calledWith('abc')).to.be.true;
+      expect(statusSpy.notCalled).to.be.true;
+      expect(nextSpy.calledOnce).to.be.true;
+      expect(req.username).to.be.equal('tada');
     });
   });
 });

@@ -6,7 +6,7 @@ const ToDo = require('../../models/todo');
 const { query, resetDatabase } = require('../utils');
 const sinon = require('sinon');
 const db = require('../../database/index');
-const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 const sandbox = sinon.createSandbox();
 
@@ -16,7 +16,9 @@ describe('Todo', () => {
 
   before(() => {
     return resetDatabase().then(() =>
-      sinon.stub(axios, 'post').resolves({ data: { username: username } })
+      sinon.stub(jwt, 'verify').callsFake((token, secret, callback) => {
+        callback(null, { username: username });
+      })
     );
   });
 

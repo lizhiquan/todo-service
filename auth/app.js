@@ -7,6 +7,5 @@ const app = express();
 app.use(morgan('combined', { stream: winston.stream }));
 
 app.use('/user', require('./routes/user'));
-app.use('/token', require('./routes/token'));
 
 module.exports = app;
