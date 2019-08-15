@@ -10,6 +10,5 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - ../auth/bin:/docker-entrypoint-initdb.d
-      - ../todo/bin:/docker-entrypoint-initdb.d
+      - ../bin:/docker-entrypoint-initdb.d
       - /var/lib/mysql
