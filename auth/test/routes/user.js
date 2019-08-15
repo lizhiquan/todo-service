@@ -3,15 +3,16 @@ const app = require('../../app');
 const HttpStatus = require('http-status-codes');
 const User = require('../../models/user');
 const expect = require('chai').expect;
-const { resetDatabase } = require('../utils');
 const sinon = require('sinon');
 const sequelize = require('../../database/sequelize');
+const dotenv = require('dotenv');
+dotenv.config({ path: './test/.env.test' });
 
 const sandbox = sinon.createSandbox();
 
 describe('User', () => {
   before(() => {
-    return resetDatabase();
+    return sequelize.drop().then(() => sequelize.sync());
   });
 
   afterEach(() => {

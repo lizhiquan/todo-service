@@ -21,5 +21,8 @@ exports.query = sql => {
 };
 
 exports.resetDatabase = () => {
-  return readFile('./bin/db-script.sql', 'utf8').then(sql => this.query(sql));
+  return readFile('./bin/drop.sql', 'utf8')
+    .then(sql => this.query(sql))
+    .then(() => readFile('./bin/schema.sql', 'utf8'))
+    .then(sql => this.query(sql));
 };

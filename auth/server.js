@@ -4,6 +4,7 @@ const db = require('./database/sequelize');
 const port = process.env.PORT || 3000;
 
 db.authenticate()
+  .then(() => db.sync())
   .then(() =>
     app.listen(port, () => {
       console.log('Database connection has been established successfully.');
