@@ -3,8 +3,8 @@ services:
   auth:
     container_name: auth
     command: >
-      sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
-             yarn run coverage:report"
+      sh -c "./wait-for-it.sh db:3306 -- yarn test &&
+             mv coverage.txt shared"
     build: 
       context: ../auth
       dockerfile: ./docker/Dockerfile

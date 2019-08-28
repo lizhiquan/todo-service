@@ -5,10 +5,17 @@ node_js:
 services:
   - docker
 
+cache:
+  directories:
+  - node_modules
+
 before_script:
   # Host MySQL takes port 3306 so shutdown it.
   - sudo service mysql stop
-  - ci_env=`bash <(curl -s https://codecov.io/env)`
 
 script:
-  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.test.yml run $ci_env auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.test.yml run $ci_env todo
+  - mkdir shared
+  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" todo
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
