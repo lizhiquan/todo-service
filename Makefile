@@ -1,6 +1,6 @@
-.PHONY: run_all down_all auth_test todo_test
+.PHONY: up_all down_all auth_test todo_test
 
-run_all:
+up_all:
 	docker-compose -f docker-compose/auth.yml \
 								 -f docker-compose/todo.yml \
 								 -f docker-compose/mysql.yml \
@@ -15,13 +15,9 @@ down_all:
 auth_test:
 	docker-compose -f docker-compose/auth.test.yml \
 								 -f docker-compose/mysql.test.yml \
-								 up --build \
-								 --abort-on-container-exit \
-    						 --exit-code-from auth
+								 run auth
 
 todo_test:
 	docker-compose -f docker-compose/todo.test.yml \
 								 -f docker-compose/mysql.test.yml \
-								 up --build \
-								 --abort-on-container-exit \
-    						 --exit-code-from todo
+								 run todo
