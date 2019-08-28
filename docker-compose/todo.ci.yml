@@ -4,7 +4,8 @@ services:
     container_name: todo
     command: >
       sh -c "./wait-for-it.sh db:3306 -- yarn test &&
-             mv coverage.txt shared"
+             yarn run coverage:report &&
+             mv coverage.lcov shared"
     build: 
       context: ../todo
       dockerfile: ./docker/Dockerfile
