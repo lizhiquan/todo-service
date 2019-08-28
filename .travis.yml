@@ -8,6 +8,8 @@ services:
 before_script:
   # Host MySQL takes port 3306 so shutdown it.
   - sudo service mysql stop
+  - ci_env=`bash <(curl -s https://codecov.io/env)`
 
 script:
-  - make auth_test && make todo_test
+  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.test.yml run $ci_env auth
+  - docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.test.yml run $ci_env todo

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  auth:
+    container_name: auth
+    command: >
+      sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
+             yarn run coverage:report &&
+             bash <(curl -s https://codecov.io/bash)"
+    build: 
+      context: ../auth
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '3000:3000'
+    env_file: ../auth/docker/.env.local
+    environment:
+      - CODECOV_TOKEN=152561a7-85a0-4dd0-86e3-28000089787d
+    depends_on:
+      - db
