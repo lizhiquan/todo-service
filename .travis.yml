@@ -18,6 +18,4 @@ script:
   - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/app/shared" auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/app/shared" todo
 
 after_success:
-- ls -a
-- cd shared && ls -a && cd ..
 - bash <(curl -s https://codecov.io/bash)
