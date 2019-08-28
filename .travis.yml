@@ -15,7 +15,7 @@ before_script:
 
 script:
   - mkdir shared
-  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" todo
+  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/app/shared" auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/app/shared" todo
 
 after_success:
 - ls -a
