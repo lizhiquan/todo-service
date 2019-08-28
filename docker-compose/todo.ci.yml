@@ -3,8 +3,7 @@ services:
   todo:
     container_name: todo
     command: >
-      sh -c "./wait-for-it.sh db:3306 -- yarn test &&
-             yarn run coverage:report &&
+      sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
              mv coverage.lcov shared"
     build: 
       context: ../todo
