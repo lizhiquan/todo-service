@@ -1,4 +1,4 @@
-.PHONY: up_all down_all auth_test todo_test
+.PHONY: up_all down_all auth_test todo_test test
 
 up_all:
 	docker-compose -f docker-compose/auth.yml \
@@ -21,3 +21,5 @@ todo_test:
 	docker-compose -f docker-compose/todo.test.yml \
 								 -f docker-compose/mysql.test.yml \
 								 run todo
+
+test: auth_test todo_test
