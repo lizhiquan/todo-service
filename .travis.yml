@@ -5,5 +5,9 @@ node_js:
 services:
   - docker
 
+before_script:
+  # Host MySQL takes port 3306 so shutdown it.
+  - sudo service mysql stop
+
 script:
   - make auth_test && make todo_test
