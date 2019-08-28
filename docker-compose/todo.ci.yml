@@ -4,8 +4,7 @@ services:
     container_name: todo
     command: >
       sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
-             yarn run coverage:report &&
-             bash <(curl -s https://codecov.io/bash)"
+             yarn run coverage:report"
     build: 
       context: ../todo
       dockerfile: ./docker/Dockerfile

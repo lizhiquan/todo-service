@@ -11,5 +11,4 @@ before_script:
   - ci_env=`bash <(curl -s https://codecov.io/env)`
 
 script:
-  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.test.yml run $ci_env auth
-  - docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.test.yml run $ci_env todo
+  - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.test.yml run $ci_env auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.test.yml run $ci_env todo
