@@ -5,6 +5,10 @@ node_js:
 services:
   - docker
 
+env:
+  global:
+    - CODECOV_TOKEN=152561a7-85a0-4dd0-86e3-28000089787d
+
 before_script:
   # Host MySQL takes port 3306 so shutdown it.
   - sudo service mysql stop
@@ -14,4 +18,6 @@ script:
   - docker-compose -f docker-compose/auth.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" auth && docker-compose -f docker-compose/todo.ci.yml -f docker-compose/mysql.yml run -v "$PWD/shared:/shared" todo
 
 after_success:
+- ls -a
+- cd shared && ls -a && cd ..
 - bash <(curl -s https://codecov.io/bash)
