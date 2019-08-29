@@ -35,7 +35,7 @@ All needed environment variables are provided in [`.env.example`](./.env.example
 
 #### Run unit tests
 
-    make test
+    make test_all
 
 ## Technologies
 
