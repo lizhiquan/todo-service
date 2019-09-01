@@ -1,0 +1,15 @@
+version: '3'
+services:
+  auth:
+    container_name: auth
+    command: >
+      sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
+             mv coverage-auth.lcov shared"
+    build: 
+      context: ../auth
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '3000:3000'
+    env_file: ../auth/docker/.env.local
+    depends_on:
+      - db

@@ -12,48 +12,30 @@ To-do service is a simple backend-only service which is built to demonstrate han
 - [Quick Start](#quick-start)
 - [Technologies](#technologies)
 - [Endpoints](#endpoints)
-- [Database](#database)
 
 ## Quick Start
 
 ### Prerequisites
 
-You'll need a few things before we get started.
-
-- NodeJS
-- MySQL
-
-Make sure you have these tools installed in your computer (an easy way is through [homebrew](http://brew.sh)), then run `npm install` or `yarn` to install dependencies.
-
-### Create database
-
-After installing MySQL, create a new database and run this [script](./bin/db-script.sql) to create needed tables.
+You'll need Docker before we get started. Make sure you have Docker installed in your computer (an easy way is through [homebrew](http://brew.sh) by doing `brew cask install docker`).
 
 ### Environment variables
 
-All needed environment variables are provided in [`.env.example`](./.env.example). Follow that format, create a new `.env` file in the root of your project and provide your own values.
+All needed environment variables are provided in [`.env.example`](./.env.example). Follow that format, create a new `.env` file in each service directory and provide your own values.
 
 ### Scripts
 
 #### Start the server
 
-    npm start
+    make up_all
 
-#### Start the server in dev mode
+#### Shutdown the server
 
-    npm run dev
-
-In this mode, the server is running using `nodemon` and auto restart when changes happen.
+    make down_all
 
 #### Run unit tests
 
-    npm test
-
-In order to run test, your have to create another env file named `.env.test` to connect to your test database.
-
-#### Start docker container
-
-    docker-compose -f docker/docker-compose.yml up --build -d
+    make test_all
 
 ## Technologies
 
@@ -193,30 +175,3 @@ Header:
 | Field           | Description                                                          | Optional |
 | --------------- | -------------------------------------------------------------------- | -------- |
 | `Authorization` | Bearer type authentication using the token received after signing in | no       |
-
-## Database
-
-### User
-
-```sql
-CREATE TABLE user (
-  username VARCHAR(20) NOT NULL,
-  password VARCHAR(80) NOT NULL,
-  PRIMARY KEY (username)
-);
-```
-
-### To Do
-
-```sql
-CREATE TABLE todo_item (
-  id INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(50) NOT NULL,
-  done BIT NOT NULL,
-  created DATETIME NOT NULL,
-  modified DATETIME,
-  username VARCHAR(20),
-  PRIMARY KEY (id),
-  FOREIGN KEY (username) REFERENCES user(username)
-);
-```

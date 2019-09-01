@@ -1,0 +1,15 @@
+version: '3'
+services:
+  todo:
+    container_name: todo
+    command: >
+      sh -c "./wait-for-it.sh db:3306 -- yarn run coverage &&
+             mv coverage-todo.lcov shared"
+    build: 
+      context: ../todo
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '3001:3001'
+    env_file: ../todo/docker/.env.local
+    depends_on:
+      - db

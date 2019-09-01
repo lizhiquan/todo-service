@@ -28,6 +28,7 @@ module.exports = {
     'symbol-description': 'error',
     yoda: ['error', 'never', { exceptRange: true }],
     'prefer-const': 'error',
-    'newline-per-chained-call': 1
+    'newline-per-chained-call': 1,
+    "no-console": "off"
   }
 };
