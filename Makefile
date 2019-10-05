@@ -6,23 +6,23 @@ docker-compose-all=-f docker-compose/auth.yml \
 
 ## Start all services
 up_all:
-  @docker-compose $(docker-compose-all) up --build -d
+	@docker-compose $(docker-compose-all) up --build -d
 
 ## Stop all services
 down_all:
-  @docker-compose $(docker-compose-all) down
+	@docker-compose $(docker-compose-all) down
 
 ## Unit test auth service
 auth_test:
-  @docker-compose -f docker-compose/auth.test.yml \
-                  -f docker-compose/mysql.test.yml \
-                  run auth
+	@docker-compose -f docker-compose/auth.test.yml \
+                    -f docker-compose/mysql.test.yml \
+                    run auth
 
 ## Unit test todo service
 todo_test:
-  @docker-compose -f docker-compose/todo.test.yml \
-                  -f docker-compose/mysql.test.yml \
-                  run todo
+	@docker-compose -f docker-compose/todo.test.yml \
+                    -f docker-compose/mysql.test.yml \
+                    run todo
 
 ## Unit test all services
 test_all: auth_test todo_test
