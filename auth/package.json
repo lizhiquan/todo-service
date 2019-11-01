@@ -10,7 +10,7 @@
     "coverage": "nyc npm test && nyc report --reporter=text-lcov > coverage-auth.lcov"
   },
   "dependencies": {
-    "app-root-path": "^2.2.1",
+    "app-root-path": "^3.0.0",
     "bcrypt": "^3.0.6",
     "bluebird": "^3.5.5",
     "dotenv": "^8.0.0",
